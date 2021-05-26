@@ -13,13 +13,15 @@ from tqdm import tqdm
 # template - фрагмент
 def FindImage(SoursePicture, template):
     img_rgb = cv2.imread(SoursePicture)
+    if img_rgb is None:
+        return False
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
     
     w, h = template.shape[::-1]
 
     res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.51 # Если  найденные фрагменты в картинке (SoursePicture), похожи на template больше чем на 51%, то возращает true
+    threshold = 0.88 # Если  найденные фрагменты в картинке (SoursePicture), похожи на template больше чем на 88%, то возращает true
     loc = np.where( res >= threshold)
     for pt in zip(*loc[::-1]):
         cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
@@ -36,7 +38,7 @@ start = time.time()
 Chapters = os.listdir(SoursePicture);
 for Chapter in tqdm(Chapters):
     for picture in  os.listdir(SoursePicture + "/" + Chapter):
-        if FingImage(SoursePicture + "/"  + Chapter + "/" + picture, template):
+        if FindImage(SoursePicture + "/"  + Chapter + "/" + picture, template):
             Result += SoursePicture + "/" + Chapter + "/" + picture + "\n"
 
 timeEnd = "Ran in {} seconds".format(time.time() - start)
