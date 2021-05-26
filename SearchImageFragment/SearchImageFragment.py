@@ -11,7 +11,7 @@ from tqdm import tqdm
 # Поиск изображения 
 # SoursePicture - большое изображение в котом введётся поиск по фрагменту
 # template - фрагмент
-def FingImage(SoursePicture, template):
+def FindImage(SoursePicture, template):
     img_rgb = cv2.imread(SoursePicture)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
